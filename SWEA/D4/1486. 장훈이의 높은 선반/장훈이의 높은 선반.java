@@ -7,12 +7,10 @@ import java.util.StringTokenizer;
 
 class Solution {
 
-    static int answer = 0;
     static int n;
     static int[] h;
     static int b;
     static int minimum;
-    static int nowSum;
 
     public static void main(String args[]) throws Exception {
 
@@ -27,11 +25,9 @@ class Solution {
 
             tk = new StringTokenizer(br.readLine());
 
-            answer = 0;
             n = Integer.parseInt(tk.nextToken());
             h = new int[n];
             b = Integer.parseInt(tk.nextToken());
-            nowSum = 0;
             minimum = Integer.MAX_VALUE;
 
             tk = new StringTokenizer(br.readLine());
@@ -42,9 +38,7 @@ class Solution {
                 h[i] = nowHeight;
             }
 
-            for(int i = 0; i < n; i++){
-                backTracking(i);
-            }
+            backTracking(0,0);
             int answer = minimum - b;
             sb.append("#").append(test_case).append(" ").append(answer).append("\n");
         }
@@ -54,18 +48,18 @@ class Solution {
         bw.close();
     }
 
-    private static void backTracking(int start) {
+    private static void backTracking(int depth, int sum) {
 
-        if(nowSum>=b){
+        if(n==depth){
+            if(sum>=b){
 
-            minimum = Integer.min(minimum,nowSum);
+                minimum = Integer.min(minimum,sum);
+            }
             return;
         }
 
-        for (int i = start; i < n; i++) {
-            nowSum += h[i];
-            backTracking(i+1);
-            nowSum -= h[i];
-        }
+        backTracking(depth+1,sum+h[depth]);
+        backTracking(depth+1,sum);
+
     }
 }
